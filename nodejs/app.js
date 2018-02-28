@@ -4,6 +4,10 @@ const app = express();
 const log = require('morgan');
 const path = require('path');
 
+const bodyParser =require('body-parser');
+
+app.use( bodyParser.urlencoded( { extended: false } ) );
+
 app.use(log ('dev') );
 
 app.use( function (req, res, next){
@@ -18,6 +22,11 @@ app.get('/', function(req, res) {
   		);
 });
 
+app.post('/coordinate', function(req, res) {
+ 	console.log(req.body);
+ 	res.end();
+
+});
 
 
 app.listen(3000, function() {

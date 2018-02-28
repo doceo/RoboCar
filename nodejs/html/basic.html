@@ -1,16 +1,25 @@
+<!--  http://learningthreejs.com/blog/2011/12/26/let-s-make-a-3d-game-virtual-joystick/
+//	A library javascript to provide a virtual joystick on touchscreen.
+
+//	inspired by this
+//  http://sebleedelisle.com/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/
+//	from http://sebleedelisle.com/
+-->
+
 <html>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<style>
 		body {
 			overflow	: hidden;
 			padding		: 0;
 			margin		: 0;
-			background-color: #BBB;
+			background-color: #000;
 		}
 		#info {
+			color		: #fff;
 			position	: absolute;
 			top		: 0px;
 			width		: 100%;
@@ -18,7 +27,7 @@
 			text-align	: center;
 		}
 		#info a {
-			color		: #66F;
+			color		: #0f0;
 			text-decoration	: none;
 		}
 		#info a:hover {
@@ -38,17 +47,9 @@
 	<body>
 		<div id="container"></div>
 		<div id="info">
-			<a href="http://learningthreejs.com/blog/2011/12/26/let-s-make-a-3d-game-virtual-joystick/" target="_blank">VirtualJoystick.js</a>
-			A library javascript to provide a virtual joystick on touchscreen.
-			-
-			inspired by this
-			<a href="http://sebleedelisle.com/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/">post</a>
-			from
-			<a href="http://sebleedelisle.com/">seb.ly</a>
-			<br/>
-			Touch the screen and move
-			-
-			works with mouse too as debug
+		
+			tocca il display e guida!
+			
 			<br/>
 			<span id="result"></span>
 		</div> 
@@ -317,6 +318,10 @@ VirtualJoystick.prototype._onTouchStart	= function(event)
 	// forward the action
 	var x		= touch.pageX;
 	var y		= touch.pageY;
+	var pos = { x:x , y:y };
+	
+	$.post("/coordinate/", pos);
+	
 	return this._onDown(x, y)
 }
 
@@ -489,14 +494,15 @@ VirtualJoystick.prototype._check3D = function()
 			})
 
 			setInterval(function(){
-				var outputEl	= document.getElementById('result');
-				outputEl.innerHTML	= '<b>Result:</b> '
+				var outputEl = document.getElementById('result');
+				outputEl.innerHTML	= '<b>Posizione:</b><br>'
 					+ ' dx:'+joystick.deltaX()
+					+ (joystick.up()	? ' up'		: '')
+					+ (joystick.down()	? ' down' 	: '')	
+					+ '<br>'
 					+ ' dy:'+joystick.deltaY()
 					+ (joystick.right()	? ' right'	: '')
-					+ (joystick.up()	? ' up'		: '')
 					+ (joystick.left()	? ' left'	: '')
-					+ (joystick.down()	? ' down' 	: '')	
 			}, 1/30 * 1000);
 		</script>
 	</body>
