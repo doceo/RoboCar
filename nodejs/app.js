@@ -11,11 +11,6 @@ app.use( function (req, res, next){
 	next();
 });
 
-app.use(
-	'/js',
-	express.static ( path.resolve( __dirname, 'js'))
-);
-
 
 app.get('/', function(req, res) {
   res.sendFile(
