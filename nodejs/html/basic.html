@@ -316,8 +316,9 @@ VirtualJoystick.prototype._onTouchStart	= function(event)
 	this._touchIdx	= touch.identifier;
 
 	// forward the action
-	var x		= touch.pageX;
-	var y		= touch.pageY;
+	var x		= Math.round(touch.pageX);
+	var y		= Math.round(touch.pageY);
+
 	var pos = { x:x , y:y };
 	
 	$.post("/coordinate/", pos);
@@ -483,6 +484,11 @@ VirtualJoystick.prototype._check3D = function()
 			console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
 	
 			var joystick	= new VirtualJoystick({
+				stationaryBase:true,
+				baseX:document.body.clientWidth/2,
+				baseY:document.body.clientHeight/2,
+				limitStickTravel:true,
+				stickRadius:120,
 				container	: document.getElementById('container'),
 				mouseSupport	: true,
 			});
@@ -496,11 +502,11 @@ VirtualJoystick.prototype._check3D = function()
 			setInterval(function(){
 				var outputEl = document.getElementById('result');
 				outputEl.innerHTML	= '<b>Posizione:</b><br>'
-					+ ' dx:'+joystick.deltaX()
+					+ ' dx:'+ Math.round(joystick.deltaX())
 					+ (joystick.up()	? ' up'		: '')
 					+ (joystick.down()	? ' down' 	: '')	
 					+ '<br>'
-					+ ' dy:'+joystick.deltaY()
+					+ ' dy:'+Math.round(joystick.deltaY())
 					+ (joystick.right()	? ' right'	: '')
 					+ (joystick.left()	? ' left'	: '')
 			}, 1/30 * 1000);
