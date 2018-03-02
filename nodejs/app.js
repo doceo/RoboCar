@@ -4,6 +4,8 @@ const app = express();
 const log = require('morgan');
 const path = require('path');
 
+const io = require('socket.io')(server);
+
 const bodyParser =require('body-parser');
 
 app.use( bodyParser.urlencoded( { extended: false } ) );
