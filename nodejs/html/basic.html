@@ -329,7 +329,9 @@ VirtualJoystick.prototype._onTouchStart	= function(event)
 	var pos = { x:x , y:y };
 	
 	$.post("/coordinate/", pos);
-//	socket.emit('coordianate', pos);
+	
+	
+	socket.emit('coordinate', pos);
 	
 	return this._onDown(x, y)
 }

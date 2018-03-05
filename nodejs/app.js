@@ -19,13 +19,7 @@ app.use( function (req, res, next){
 	next();
 });
 
-io.on('connection', function (socket) {
-  
-  console.log('pilota connesso');
-  socket.on('coordinate', function (data) {
-	console.log('coordinate ricevute: ' + dato);
-  });
-});  
+
 app.get('/', function(req, res) {
   res.sendFile(
   		path.resolve( __dirname, 'html', 'basic.html')
@@ -38,7 +32,15 @@ app.post('/coordinate', function(req, res) {
 
 });
 
+io.on('connection', function (socket) {
+  console.log('pilota connesso');
 
-app.listen(3000, function() {
+  socket.on('coordinate', function (data) {
+	console.log('coordinate ricevute ', 'x: ', data.x, 'y: ', data.y);
+  });
+  
+});  
+
+http.listen(3000, function() {
     console.log('Server in ascolto sulla porta 3000 ...');
   });
