@@ -53,6 +53,13 @@
 			<br/>
 			<span id="result"></span>
 		</div> 
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			  var socket = io();
+		</script>
+
+		
 		<script>
 		
 		var VirtualJoystick	= function(opts)
@@ -322,6 +329,7 @@ VirtualJoystick.prototype._onTouchStart	= function(event)
 	var pos = { x:x , y:y };
 	
 	$.post("/coordinate/", pos);
+//	socket.emit('coordianate', pos);
 	
 	return this._onDown(x, y)
 }
@@ -502,11 +510,11 @@ VirtualJoystick.prototype._check3D = function()
 			setInterval(function(){
 				var outputEl = document.getElementById('result');
 				outputEl.innerHTML	= '<b>Posizione:</b><br>'
-					+ ' dx:'+ Math.round(joystick.deltaX())
+					+ ' dx:'+Math.round(joystick.deltaX())
 					+ (joystick.up()	? ' up'		: '')
 					+ (joystick.down()	? ' down' 	: '')	
 					+ '<br>'
-					+ ' dy:'+Math.round(joystick.deltaY())
+					+ (' dy:')+Math.round(joystick.deltaY())
 					+ (joystick.right()	? ' right'	: '')
 					+ (joystick.left()	? ' left'	: '')
 			}, 1/30 * 1000);

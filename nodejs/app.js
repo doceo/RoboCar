@@ -1,14 +1,16 @@
 const express = require('express');
 const app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 const log = require('morgan');
 const path = require('path');
 
-const io = require('socket.io')(server);
-
 const bodyParser =require('body-parser');
 
 app.use( bodyParser.urlencoded( { extended: false } ) );
+
+app.use(express.static(path.join(__dirname, 'html')));
 
 app.use(log ('dev') );
 
@@ -17,7 +19,13 @@ app.use( function (req, res, next){
 	next();
 });
 
-
+io.on('connection', function (socket) {
+  
+  console.log('pilota connesso');
+  socket.on('coordinate', function (data) {
+	console.log('coordinate ricevute: ' + dato);
+  });
+});  
 app.get('/', function(req, res) {
   res.sendFile(
   		path.resolve( __dirname, 'html', 'basic.html')
