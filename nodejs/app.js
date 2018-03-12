@@ -6,6 +6,12 @@ var io = require('socket.io')(http);
 const log = require('morgan');
 const path = require('path');
 
+const mqtt = require('mqtt');
+const client = mqtt.connect('mqtt://localhost:1883', {
+	clean: true,
+    clientId: 'nodeJS'
+});  
+
 const bodyParser =require('body-parser');
 
 app.use( bodyParser.urlencoded( { extended: false } ) );
@@ -19,6 +25,9 @@ app.use( function (req, res, next){
 	next();
 });
 
+client.on('connect', () => {
+  client.subscribe('direzione')
+});
 
 app.get('/', function(req, res) {
   res.sendFile(
@@ -37,8 +46,14 @@ io.on('connection', function (socket) {
 
   socket.on('coordinate', function (data) {
 	console.log('coordinate ricevute ', 'x: ', data.x, 'y: ', data.y);
-  });
-  
+
+  });	
+    mqttClient.on('connect', (connack) => {  
+    mqttClient.publish('direzione', data);
+    });
+
+
+
 });  
 
 http.listen(3000, function() {
